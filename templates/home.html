@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+
+
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+</head>
+
+<body>
+    
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2> Home Page </h2>
+
+<div class="new-post-btn">
+    <a href="{% url 'new_post' %}"> Add Post </a>
+</div>
+
+<div>
+    {% if user.is_authenticated %}
+    <p> Hi {{ user.username }} </p>
+    <!-- <button><a href="{% url 'logout' %}">Logout</a></button> -->
+     <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+     </form>
+    {% else %}
+    <p> You are not Logged In </p>
+    <button><a href="{% url 'login' %}">
+        Login 
+    </a></button>
+    {% endif %}
+</div>
+
+{% for post in object_list %}
+<div class="post-entry">
+    <h2><a href="{% url 'post_detail' post.pk %}">{{post.title }}</a></h2>
+    <p> {{ post.body }}</p>
+</div>
+{% endfor %}
+{% endblock content %}
+
+</body>
+</html>
